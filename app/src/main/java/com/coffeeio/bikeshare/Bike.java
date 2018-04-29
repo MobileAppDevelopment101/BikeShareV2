@@ -15,7 +15,6 @@ public class Bike extends RealmObject {
     private String id;
     @Required
     private String name;
-    @Required
     private double price;
 
     public Bike() {

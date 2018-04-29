@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import io.realm.Realm
 
 import kotlinx.android.synthetic.main.activity_main.*
 import android.provider.MediaStore
@@ -21,6 +20,12 @@ import android.location.LocationManager
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.TextView
+import io.realm.*
+
+import com.coffeeio.bikeshare.Constants.REALM_BASE_URL
+import io.realm.Realm.setDefaultConfiguration
+import io.realm.RealmConfiguration
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,25 +33,48 @@ class MainActivity : AppCompatActivity() {
     lateinit var mImageView: ImageView
     lateinit var thetext: TextView
     lateinit var locationManager: LocationManager
+    private lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Realm.init(this)
+        val realmConfig = RealmConfiguration.Builder()
+                .name("tasky.realm")
+                .schemaVersion(0)
+                .build()
+        Realm.setDefaultConfiguration(realmConfig)
+
+        //val items = setUpRealm()
+
+        //Log.d("myTag", "First $items.count()")
+        realm = Database().getRealm(this)
+        var items = realm.where(Bike::class.java).findAll();
+
+        Log.d("myTag", "$items")
+
         setContentView(R.layout.activity_main)
         ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1);
 
         mImageView = findViewById(R.id.imageView)
         thetext = findViewById(R.id.thetext)
 
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager;
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //        .setAction("Action", null).show()
             dispatchTakePictureIntent()
         }
         fab.setOnClickListener { view ->
+
+            realm.executeTransaction(object : Realm.Transaction {
+                override fun execute(realm: Realm) {
+                    realm.insertOrUpdate(Bike())
+                }
+            })
+            var items2 = realm.where(Bike::class.java).findAll();
+            Log.d("myTag", "$items2")
             try {
                 // Request location updates
                 locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener);
@@ -56,7 +84,17 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
 
+    private fun setUpRealm(): RealmResults<Bike> {
+        val configuration = SyncConfiguration.Builder(
+                SyncUser.current(),
+                REALM_BASE_URL + "/items").build()
+
+        realm = Realm.getInstance(configuration)
+        return realm
+                .where(Bike::class.java) // analogous to Item.class
+                .findAllAsync()
     }
 
     //define the listener
