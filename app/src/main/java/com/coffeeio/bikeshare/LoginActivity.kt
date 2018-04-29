@@ -30,13 +30,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        setSupportActionBar(toolbar)
 
         realm = Database().getRealm(this)
         // Set up the login form.
         mPasswordEditText = findViewById(R.id.password)
         mUsernameEditText = findViewById(R.id.username)
         val loginButton = findViewById<Button>(R.id.login_button)
+        val createButton = findViewById<Button>(R.id.create_button)
         loginButton.setOnClickListener { view ->
             val password =  mPasswordEditText.text.toString().trim()
             val username =  mUsernameEditText.text.toString().trim()
@@ -52,12 +52,23 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
-        fab.setOnClickListener { view ->
-            realm.executeTransaction(object : Realm.Transaction {
-                override fun execute(realm: Realm) {
-                    realm.insertOrUpdate(User("tom", HashUtils().hashString("SHA-512", "1")))
-                }
-            })
+        createButton.setOnClickListener { view ->
+            val username =  mUsernameEditText.text.toString().trim()
+            val password =  mPasswordEditText.text.toString().trim()
+
+            val result : User? = realm.where(User::class.java).equalTo("username", username).findFirst()
+            if (result != null) {
+                Toast.makeText(this, "Username already exists", Toast.LENGTH_SHORT).show()
+            } else {
+                val hash = HashUtils().hashString("SHA-512", password)
+
+                realm.executeTransaction(object : Realm.Transaction {
+                    override fun execute(realm: Realm) {
+                        realm.insertOrUpdate(User(username, hash))
+                    }
+                })
+                Toast.makeText(this, "User created", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

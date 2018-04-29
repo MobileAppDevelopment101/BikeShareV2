@@ -19,10 +19,12 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import io.realm.*
 
 import com.coffeeio.bikeshare.Constants.REALM_BASE_URL
+import com.coffeeio.bikeshare.R.id.toolbar
 import io.realm.Realm.setDefaultConfiguration
 import io.realm.RealmConfiguration
 
@@ -37,34 +39,53 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Realm.init(this)
-        val realmConfig = RealmConfiguration.Builder()
-                .name("tasky.realm")
-                .schemaVersion(0)
-                .build()
-        Realm.setDefaultConfiguration(realmConfig)
+        setContentView(R.layout.activity_main)
 
-        //val items = setUpRealm()
-
-        //Log.d("myTag", "First $items.count()")
         realm = Database().getRealm(this)
+
+
+        val intent = getIntent();
+        val userid = intent.getStringExtra("userid")
+        Log.d("myTag","userid: $userid")
+
+
+        val findRideButton = findViewById<Button>(R.id.find_ride)
+        val endRideButton = findViewById<Button>(R.id.end_ride)
+        val myRidesButton = findViewById<Button>(R.id.my_rides)
+        val myAccount = findViewById<Button>(R.id.my_account)
+
+        findRideButton.setOnClickListener { view ->
+
+        }
+        endRideButton.setOnClickListener { view ->
+
+        }
+        myRidesButton.setOnClickListener { view ->
+
+        }
+        myAccount.setOnClickListener { view ->
+
+        }
+        fab.setOnClickListener { view ->
+
+        }
+
+
         var items = realm.where(Bike::class.java).findAll();
 
         Log.d("myTag", "$items")
 
-        setContentView(R.layout.activity_main)
         ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1);
 
         mImageView = findViewById(R.id.imageView)
         thetext = findViewById(R.id.thetext)
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-
-        //setSupportActionBar(toolbar)
+        /*
         fab.setOnClickListener { view ->
             //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             //        .setAction("Action", null).show()
-            dispatchTakePictureIntent()
+            //dispatchTakePictureIntent()
         }
         fab.setOnClickListener { view ->
 
@@ -84,6 +105,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+        */
     }
 
     private fun setUpRealm(): RealmResults<Bike> {

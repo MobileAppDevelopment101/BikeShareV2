@@ -54,24 +54,32 @@
             android:hint="Password"
             android:maxLines="1"
             android:singleLine="true" />
-        <Button
-            android:id="@+id/login_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Login"
-            android:textStyle="bold" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            app:backgroundTint="@android:color/darker_gray"
-            app:srcCompat="@android:drawable/ic_input_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:tint="@android:color/white" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/login_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:text="Login"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/create_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:text="Create User"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

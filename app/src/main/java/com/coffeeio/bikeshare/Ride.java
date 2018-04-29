@@ -1,28 +1,32 @@
 package com.coffeeio.bikeshare;
 
-import android.support.annotation.RequiresPermission;
+import android.location.Location;
 
+import java.util.Locale;
 import java.util.UUID;
 
-import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
-public class Bike extends RealmObject {
+public class Ride {
 
     @PrimaryKey
     @Required
     private String id;
     @Required
-    private String name;
+    private String bikeId;
     @Required
-    private String userid;
+    private double cost;
+    @Required
+    private Location startLocation;
+    @Required
+    private String startTime;
 
-    private double price;
+    private Location endLocation;
+    private String endTime;
 
-    public Bike() {
+    public Ride() {
         id = UUID.randomUUID().toString();
-        name = "Something";
     }
     public String getId() {
         return id;

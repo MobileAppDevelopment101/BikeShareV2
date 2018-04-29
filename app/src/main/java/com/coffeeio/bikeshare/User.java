@@ -15,7 +15,6 @@ public class User extends RealmObject {
     @Required
     private String password;
 
-
     public User() {
         id =  UUID.randomUUID().toString();
     }
@@ -28,4 +27,5 @@ public class User extends RealmObject {
     public String getId() {
         return id;
     }
+
 }
