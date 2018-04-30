@@ -27,10 +27,12 @@ public class Bike extends RealmObject {
     private double lastLongtitude;
     private int typeid;
     private double price;
+    private boolean inUse;
 
     public Bike() {
         id = UUID.randomUUID().toString();
         name = "Something";
+        inUse = false;
     }
     public String getId() {
         return id;
@@ -91,5 +93,13 @@ public class Bike extends RealmObject {
 
     public void setLastLatitude(double lastLatitude) {
         this.lastLatitude = lastLatitude;
+    }
+
+    public boolean isInUse() {
+        return inUse;
+    }
+
+    public void setInUse(boolean inUse) {
+        this.inUse = inUse;
     }
 }
