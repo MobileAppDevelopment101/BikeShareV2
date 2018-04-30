@@ -55,8 +55,9 @@ class LoginActivity : AppCompatActivity() {
         createButton.setOnClickListener { view ->
             val username =  mUsernameEditText.text.toString().trim()
             val password =  mPasswordEditText.text.toString().trim()
+            if (!validateUser(username, password)) return@setOnClickListener
 
-            val result : User? = realm.where(User::class.java).equalTo("username", username).findFirst()
+            val result: User? = realm.where(User::class.java).equalTo("username", username).findFirst()
             if (result != null) {
                 Toast.makeText(this, "Username already exists", Toast.LENGTH_SHORT).show()
             } else {
@@ -74,7 +75,21 @@ class LoginActivity : AppCompatActivity() {
 
     private fun goToMainActivity(userid: String) {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        intent.putExtra("userid", userid)
+        val session = SessionStorage.get()
+        session.userid = userid
         startActivity(intent)
+    }
+
+    private fun validateUser(username: String, password : String) : Boolean {
+        if (username.length < 4) {
+            Toast.makeText(this, "Username is too short", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (password.length < 4) {
+            Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
     }
 }

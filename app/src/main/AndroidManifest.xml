@@ -20,6 +20,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"></activity>
+        <activity android:name=".CreateBike"></activity>
+        <activity android:name=".EndRide"></activity>
+        <activity android:name=".StartRide"></activity>
+
     </application>
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />

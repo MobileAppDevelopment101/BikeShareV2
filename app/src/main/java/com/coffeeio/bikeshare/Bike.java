@@ -1,7 +1,10 @@
 package com.coffeeio.bikeshare;
 
+import android.graphics.Bitmap;
+import android.location.Location;
 import android.support.annotation.RequiresPermission;
 
+import java.util.Locale;
 import java.util.UUID;
 
 import io.realm.RealmObject;
@@ -17,7 +20,12 @@ public class Bike extends RealmObject {
     private String name;
     @Required
     private String userid;
+    @Required
+    private byte[] picture;
 
+    private double lastLatitude;
+    private double lastLongtitude;
+    private int typeid;
     private double price;
 
     public Bike() {
@@ -26,5 +34,62 @@ public class Bike extends RealmObject {
     }
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getTypeid() {
+        return typeid;
+    }
+
+    public void setTypeid(int typeid) {
+        this.typeid = typeid;
+    }
+
+
+    public double getLastLongtitude() {
+        return lastLongtitude;
+    }
+
+    public void setLastLongtitude(double lastLongtitude) {
+        this.lastLongtitude = lastLongtitude;
+    }
+
+    public double getLastLatitude() {
+        return lastLatitude;
+    }
+
+    public void setLastLatitude(double lastLatitude) {
+        this.lastLatitude = lastLatitude;
     }
 }

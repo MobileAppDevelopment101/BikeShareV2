@@ -24,7 +24,6 @@ import android.widget.TextView
 import io.realm.*
 
 import com.coffeeio.bikeshare.Constants.REALM_BASE_URL
-import com.coffeeio.bikeshare.R.id.toolbar
 import io.realm.Realm.setDefaultConfiguration
 import io.realm.RealmConfiguration
 
@@ -43,11 +42,15 @@ class MainActivity : AppCompatActivity() {
 
         realm = Database().getRealm(this)
 
+        val session = SessionStorage.get()
+        val userid = session.userid
+        Log.d("myTag","userid: $userid")
 
+        /*
         val intent = getIntent();
         val userid = intent.getStringExtra("userid")
         Log.d("myTag","userid: $userid")
-
+        */
 
         val findRideButton = findViewById<Button>(R.id.find_ride)
         val endRideButton = findViewById<Button>(R.id.end_ride)
@@ -67,7 +70,8 @@ class MainActivity : AppCompatActivity() {
 
         }
         fab.setOnClickListener { view ->
-
+            val intent = Intent(this@MainActivity, CreateBike::class.java)
+            startActivity(intent)
         }
 
 
@@ -77,8 +81,8 @@ class MainActivity : AppCompatActivity() {
 
         ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1);
 
-        mImageView = findViewById(R.id.imageView)
-        thetext = findViewById(R.id.thetext)
+       // mImageView = findViewById(R.id.imageView)
+       // thetext = findViewById(R.id.thetext)
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         /*
@@ -122,7 +126,7 @@ class MainActivity : AppCompatActivity() {
     //define the listener
     private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            thetext.setText("" + location.longitude + ":" + location.latitude);
+            //thetext.setText("" + location.longitude + ":" + location.latitude);
             Log.d("myTag","" + location.longitude + ":" + location.latitude )
             var l = Location("")
                 l.latitude = 55.643060

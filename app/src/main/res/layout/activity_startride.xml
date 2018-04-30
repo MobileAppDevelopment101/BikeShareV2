@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/find_bike_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Find your bike" />
+
+        <Spinner
+            android:id="@+id/find_bike"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/directions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Directions" />
+
+        <Button
+            android:id="@+id/show_bike"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show bike information" />
+
+        <TextView
+            android:id="@+id/price_type_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Price/Type" />
+
+        <Button
+            android:id="@+id/start_ride"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Unlock and start ride" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
