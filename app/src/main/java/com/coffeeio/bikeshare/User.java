@@ -15,11 +15,15 @@ public class User extends RealmObject {
     @Required
     private String password;
 
+    private double balance;
+
     public User() {
         id =  UUID.randomUUID().toString();
+        balance = 0.0;
     }
     public User(String _username, String _password) {
         id =  UUID.randomUUID().toString();
+        balance = 0.0;
         username = _username;
         password = _password;
     }

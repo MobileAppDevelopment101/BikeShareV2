@@ -26,4 +26,7 @@ class BikeTypes {
         val list = ArrayList(types.keys)
         return list[position]
     }
+    fun getTypeFromId(id : Int) : String? {
+        return types.get(id)
+    }
 }

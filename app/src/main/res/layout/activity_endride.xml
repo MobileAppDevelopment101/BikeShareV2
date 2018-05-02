@@ -24,7 +24,7 @@
             android:id="@+id/price_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Price" />
+            android:text="Cost" />
 
         <TextView
             android:id="@+id/price"

@@ -35,7 +35,13 @@
             android:id="@+id/price_type_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Price/Type" />
+            android:text="Price(pr. min) / Type" />
+
+        <TextView
+            android:id="@+id/price_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
 
         <Button
             android:id="@+id/start_ride"

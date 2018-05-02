@@ -31,6 +31,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val session = SessionStorage.get()
+        if (session.userid != "") {
+            goToMainActivity(session.userid)
+            return
+        }
+
         realm = Database().getRealm(this)
         // Set up the login form.
         mPasswordEditText = findViewById(R.id.password)

@@ -9,7 +9,7 @@ class Database {
     fun setup(context: Context) {
         Realm.init(context)
         val realmConfig = RealmConfiguration.Builder()
-                .name("tasky.realm")
+                .name("tasky.realm4")
                 .schemaVersion(0)
                 .build()
         Realm.setDefaultConfiguration(realmConfig)

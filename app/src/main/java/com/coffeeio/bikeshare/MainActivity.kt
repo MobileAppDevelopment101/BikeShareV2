@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import io.realm.*
 
 import com.coffeeio.bikeshare.Constants.REALM_BASE_URL
@@ -58,10 +59,26 @@ class MainActivity : AppCompatActivity() {
         val myAccount = findViewById<Button>(R.id.my_account)
 
         findRideButton.setOnClickListener { view ->
+            // Check user doesn't already have active ride.
+            val ride = realm.where(Ride::class.java).equalTo("userId", session.userid).equalTo("isEnded",false).findFirst()
+            if (ride != null) {
+                Toast.makeText(this, "You can only have 1 ride active at a time", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            val intent = Intent(this@MainActivity, StartRide::class.java)
+            startActivity(intent)
         }
         endRideButton.setOnClickListener { view ->
+            // Check user has an active ride.
+            val ride = realm.where(Ride::class.java).equalTo("userId", session.userid).equalTo("isEnded",false).findFirst()
+            if (ride == null) {
+                Toast.makeText(this, "No ride is active", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            val intent = Intent(this@MainActivity, EndRide::class.java)
+            startActivity(intent)
         }
         myRidesButton.setOnClickListener { view ->
 

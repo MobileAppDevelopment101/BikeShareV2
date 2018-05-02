@@ -6,7 +6,6 @@ public class SessionStorage {
     private static SessionStorage sSessionStorage;
     private String userid = "";
 
-
     private SessionStorage(Context context) {
     }
     private SessionStorage() {

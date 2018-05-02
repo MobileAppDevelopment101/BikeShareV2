@@ -31,9 +31,10 @@ public class Bike extends RealmObject {
 
     public Bike() {
         id = UUID.randomUUID().toString();
-        name = "Something";
+        name = "New bikes";
         inUse = false;
     }
+
     public String getId() {
         return id;
     }
