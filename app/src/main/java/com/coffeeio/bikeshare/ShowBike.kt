@@ -19,7 +19,7 @@ class ShowBike : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showbike)
 
-        val session = SessionStorage.get()
+        val session = SessionStorage.get(this)
         realm = Database().getRealm(this)
 
 

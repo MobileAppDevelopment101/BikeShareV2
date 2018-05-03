@@ -27,7 +27,7 @@ class CreateBike : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_createbike)
 
-        val session = SessionStorage.get()
+        val session = SessionStorage.get(this)
         realm = Database().getRealm(this)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         loc = MyLocation()

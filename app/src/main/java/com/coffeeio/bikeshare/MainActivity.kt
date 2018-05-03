@@ -43,15 +43,10 @@ class MainActivity : AppCompatActivity() {
 
         realm = Database().getRealm(this)
 
-        val session = SessionStorage.get()
+        val session = SessionStorage.get(this)
         val userid = session.userid
         Log.d("myTag","userid: $userid")
 
-        /*
-        val intent = getIntent();
-        val userid = intent.getStringExtra("userid")
-        Log.d("myTag","userid: $userid")
-        */
 
         val findRideButton = findViewById<Button>(R.id.find_ride)
         val endRideButton = findViewById<Button>(R.id.end_ride)
@@ -96,37 +91,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("myTag", "$items")
 
-        ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1);
-
-       // mImageView = findViewById(R.id.imageView)
-       // thetext = findViewById(R.id.thetext)
-
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        /*
-        fab.setOnClickListener { view ->
-            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            //        .setAction("Action", null).show()
-            //dispatchTakePictureIntent()
-        }
-        fab.setOnClickListener { view ->
-
-            realm.executeTransaction(object : Realm.Transaction {
-                override fun execute(realm: Realm) {
-                    realm.insertOrUpdate(Bike())
-                }
-            })
-            var items2 = realm.where(Bike::class.java).findAll();
-            Log.d("myTag", "$items2")
-            try {
-                // Request location updates
-                locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener);
-            } catch(ex: SecurityException) {
-                Log.d("myTag", "Security Exception, no location available");
-                Log.d("myTag",ex.toString())
-
-            }
-        }
-        */
+        //locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
     }
 
     private fun setUpRealm(): RealmResults<Bike> {
@@ -138,36 +103,6 @@ class MainActivity : AppCompatActivity() {
         return realm
                 .where(Bike::class.java) // analogous to Item.class
                 .findAllAsync()
-    }
-
-    //define the listener
-    private val locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location) {
-            //thetext.setText("" + location.longitude + ":" + location.latitude);
-            Log.d("myTag","" + location.longitude + ":" + location.latitude )
-            var l = Location("")
-                l.latitude = 55.643060
-                l.longitude = 12.580261
-            Log.d("myTag","${l.distanceTo(location)}" )
-        }
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onProviderDisabled(provider: String) {}
-    }
-
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val extras = data.extras
-            val imageBitmap = extras!!.get("data") as Bitmap
-            mImageView.setImageBitmap(imageBitmap)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -19,13 +19,13 @@ public class Ride extends RealmObject {
     @Required
     private String userId;
 
-    private double startLongtitude;
-    private double endLongtitude;
-    private double startLatitude;
-    private double endLatitude;
-
     private long startTime;
+    private double startLongtitude;
+    private double startLatitude;
+
     private long endTime;
+    private double endLongtitude;
+    private double endLatitude;
 
     private double cost;
     private boolean isEnded;

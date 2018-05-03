@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val session = SessionStorage.get()
+        val session = SessionStorage.get(this)
         if (session.userid != "") {
             goToMainActivity(session.userid)
             return
@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun goToMainActivity(userid: String) {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        val session = SessionStorage.get()
+        val session = SessionStorage.get(this)
         session.userid = userid
         startActivity(intent)
     }

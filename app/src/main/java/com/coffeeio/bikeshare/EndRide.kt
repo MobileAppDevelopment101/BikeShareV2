@@ -25,7 +25,7 @@ class EndRide : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_endride)
 
-        val session = SessionStorage.get()
+        val session = SessionStorage.get(this)
         realm = Database().getRealm(this)
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
@@ -46,10 +46,41 @@ class EndRide : AppCompatActivity() {
             val currentDiff = (currentTime - ride!!.startTime)
             val cost = getCost(bike!!.price, currentDiff)
 
-            // Deduct money
+
+            if (! loc.hasLocation()) {
+                Toast.makeText(this, "Location not found, please wait a bit and try again", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val location = loc.getLocation()
+
             // Update ride
+            ride.endTime = currentTime
+            ride.cost = cost
+            ride.endLatitude = location.latitude
+            ride.endLongtitude = location.longitude
+            ride.isEnded = true
+
             // Update bike location
+            bike.lastLongtitude = location.longitude
+            bike.lastLatitude = location.latitude
+            bike.isInUse = false
+
+            // Deduct money
+            val renter = realm.where(User::class.java).equalTo("id", session.userid).findFirst()
+            renter!!.balance -= cost
+
             // Add money to bike owner
+            val owner = realm.where(User::class.java).equalTo("id", bike.userid).findFirst()
+            owner!!.balance += cost
+
+            realm.executeTransaction(object : Realm.Transaction {
+                override fun execute(realm: Realm) {
+                    realm.insertOrUpdate(ride)
+                    realm.insertOrUpdate(bike)
+                    realm.insertOrUpdate(renter)
+                    realm.insertOrUpdate(owner)
+                }
+            })
 
             Toast.makeText(this, "Ride finish, money has been deduced from your account", Toast.LENGTH_LONG).show()
             val intent = Intent(this@EndRide, MainActivity::class.java)

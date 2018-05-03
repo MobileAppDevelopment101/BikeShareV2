@@ -29,7 +29,7 @@ class StartRide : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startride)
 
-        val session = SessionStorage.get()
+        val session = SessionStorage.get(this)
         realm = Database().getRealm(this)
         bikes = realm.where(Bike::class.java).equalTo("inUse", false).findAll()
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
