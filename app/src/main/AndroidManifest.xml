@@ -24,6 +24,7 @@
         <activity android:name=".EndRide"></activity>
         <activity android:name=".StartRide"></activity>
         <activity android:name=".ShowBike"></activity>
+        <activity android:name=".MyBikes"></activity>
     </application>
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />

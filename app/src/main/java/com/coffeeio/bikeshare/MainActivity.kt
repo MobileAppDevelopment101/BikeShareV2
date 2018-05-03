@@ -31,20 +31,18 @@ import io.realm.RealmConfiguration
 
 
 class MainActivity : AppCompatActivity() {
-    val REQUEST_IMAGE_CAPTURE = 1
-    lateinit var mImageView: ImageView
-    lateinit var thetext: TextView
-    lateinit var locationManager: LocationManager
     private lateinit var realm: Realm
+    private lateinit var session : SessionStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         realm = Database().getRealm(this)
+        session = SessionStorage.get(this)
 
-        val session = SessionStorage.get(this)
         val userid = session.userid
+        Log.d("myTag","userid: $userid")
         Log.d("myTag","userid: $userid")
 
 
@@ -76,7 +74,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         myRidesButton.setOnClickListener { view ->
+            val bikes = realm.where(Bike::class.java).equalTo("userid", session.userid)
+            if (bikes == null) {
+                Toast.makeText(this, "Sorry, you don't have any bikes registered", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
+            val intent = Intent(this@MainActivity, MyBikes::class.java)
+            startActivity(intent)
         }
         myAccount.setOnClickListener { view ->
 
@@ -115,9 +120,14 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.action_logout -> {
+                session.userid = ""
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                startActivity(intent)
+                return true
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 }

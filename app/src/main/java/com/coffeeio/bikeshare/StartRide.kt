@@ -17,9 +17,8 @@ import kotlinx.android.synthetic.main.activity_endride.*
 
 class StartRide : AppCompatActivity() {
     lateinit var realm : Realm
+    lateinit var session: SessionStorage
     lateinit var findBikeSpinner : Spinner
-    lateinit var locationManager: LocationManager
-    lateinit var loc : MyLocation
     lateinit var bikes : RealmResults<Bike>
     lateinit var priceTypeTxt : TextView
 
@@ -29,17 +28,9 @@ class StartRide : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startride)
 
-        val session = SessionStorage.get(this)
+        session = SessionStorage.get(this)
         realm = Database().getRealm(this)
         bikes = realm.where(Bike::class.java).equalTo("inUse", false).findAll()
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        loc = MyLocation()
-
-        try {
-            locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, loc);
-        } catch(ex: SecurityException) {
-            Log.d("myTag",ex.toString())
-        }
 
         findBikeSpinner = findViewById(R.id.find_bike)
         val directionButton = findViewById<Button>(R.id.directions)
@@ -80,11 +71,11 @@ class StartRide : AppCompatActivity() {
             ride.startLatitude = 0.0
             ride.startLongtitude = 0.0
 
-            realm.executeTransaction(object : Realm.Transaction {
-                override fun execute(realm: Realm) {
-                    realm.insertOrUpdate(ride)
-                }
-            })
+            realm.executeTransaction { realm ->
+                bike.isInUse = true
+                realm.insertOrUpdate(ride)
+            }
+
             Toast.makeText(this, "Your ride has started, have fun", Toast.LENGTH_SHORT).show()
             val intent = Intent(this@StartRide, MainActivity::class.java)
             startActivity(intent)
@@ -140,9 +131,8 @@ class StartRide : AppCompatActivity() {
 
     private fun getDistance(bike: Bike) : Float {
         var distance = -1f
-        if (loc.hasLocation()) {
-            val mLocation = loc.getLocation()
-
+        val mLocation = session.location
+        if (mLocation != null) {
             val bLoc = Location("bikeLocation")
             bLoc.latitude = bike.lastLatitude
             bLoc.longitude = bike.lastLongtitude

@@ -19,8 +19,6 @@ class CreateBike : AppCompatActivity() {
     private lateinit var imageBitmap : Bitmap
     private var bikeType = 1 // Start at first typeid
     lateinit var realm : Realm
-    lateinit var locationManager: LocationManager
-    lateinit var loc : MyLocation
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +27,7 @@ class CreateBike : AppCompatActivity() {
 
         val session = SessionStorage.get(this)
         realm = Database().getRealm(this)
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        loc = MyLocation()
-        try {
-            locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, loc);
-        } catch(ex: SecurityException) {
-            Log.d("myTag",ex.toString())
-        }
+
 
         val createBikeSpinner = findViewById<Spinner>(R.id.type_spinner)
         val priceEditText = findViewById<EditText>(R.id.price)
@@ -70,7 +62,8 @@ class CreateBike : AppCompatActivity() {
 
             if (! validatePhoto(imageBitmap)) return@setOnClickListener
 
-            if (!loc.hasLocation()) {
+            val myLoc = session.location
+            if (myLoc == null) {
                 Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show()
             }
 
@@ -84,7 +77,6 @@ class CreateBike : AppCompatActivity() {
             val image = stream.toByteArray()
             b.picture = image
 
-            val myLoc = loc.getLocation()
             b.lastLatitude = myLoc.latitude
             b.lastLongtitude = myLoc.longitude
 

@@ -22,11 +22,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="End ride" />
+
         <Button
             android:id="@+id/my_rides"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My Rides" />
+            android:text="My Bikes" />
         <Button
             android:id="@+id/my_account"
             android:layout_width="match_parent"

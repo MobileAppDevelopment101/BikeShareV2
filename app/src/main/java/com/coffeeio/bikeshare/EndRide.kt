@@ -17,9 +17,6 @@ import kotlinx.android.synthetic.main.activity_endride.*
 
 class EndRide : AppCompatActivity() {
     lateinit var realm : Realm
-    lateinit var locationManager: LocationManager
-    lateinit var loc : MyLocation
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +25,6 @@ class EndRide : AppCompatActivity() {
         val session = SessionStorage.get(this)
         realm = Database().getRealm(this)
 
-        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        loc = MyLocation()
 
         val ride = realm.where(Ride::class.java).equalTo("userId", session.userid).equalTo("isEnded", false).findFirst()
         if (ride == null) {
@@ -46,14 +41,14 @@ class EndRide : AppCompatActivity() {
             val currentDiff = (currentTime - ride!!.startTime)
             val cost = getCost(bike!!.price, currentDiff)
 
-
-            if (! loc.hasLocation()) {
+            val location = session.location
+            if (location == null) {
                 Toast.makeText(this, "Location not found, please wait a bit and try again", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val location = loc.getLocation()
 
             // Update ride
+            /*
             ride.endTime = currentTime
             ride.cost = cost
             ride.endLatitude = location.latitude
@@ -64,23 +59,29 @@ class EndRide : AppCompatActivity() {
             bike.lastLongtitude = location.longitude
             bike.lastLatitude = location.latitude
             bike.isInUse = false
+            */
 
             // Deduct money
             val renter = realm.where(User::class.java).equalTo("id", session.userid).findFirst()
-            renter!!.balance -= cost
 
             // Add money to bike owner
             val owner = realm.where(User::class.java).equalTo("id", bike.userid).findFirst()
-            owner!!.balance += cost
 
-            realm.executeTransaction(object : Realm.Transaction {
-                override fun execute(realm: Realm) {
-                    realm.insertOrUpdate(ride)
-                    realm.insertOrUpdate(bike)
-                    realm.insertOrUpdate(renter)
-                    realm.insertOrUpdate(owner)
-                }
-            })
+
+            realm.executeTransaction { realm ->
+                    ride.endTime = currentTime
+                    ride.cost = cost
+                    ride.endLatitude = location.latitude
+                    ride.endLongtitude = location.longitude
+                    ride.isEnded = true
+
+                    bike.lastLongtitude = location.longitude
+                    bike.lastLatitude = location.latitude
+                    bike.isInUse = false
+
+                    renter?.balance = renter!!.balance - cost.toDouble()
+                    owner?.balance = owner!!.balance + (cost).toDouble()
+            }
 
             Toast.makeText(this, "Ride finish, money has been deduced from your account", Toast.LENGTH_LONG).show()
             val intent = Intent(this@EndRide, MainActivity::class.java)
