@@ -1,6 +1,5 @@
 package com.coffeeio.bikeshare
 
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import io.realm.Realm
 import io.realm.RealmConfiguration

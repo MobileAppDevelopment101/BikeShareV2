@@ -1,34 +1,16 @@
 package com.coffeeio.bikeshare
 
-import android.Manifest
-import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
-import android.provider.MediaStore
 import android.content.Intent
-import android.graphics.Bitmap
-import android.widget.ImageView
-import android.content.Context.LOCATION_SERVICE
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import io.realm.*
-
-import com.coffeeio.bikeshare.Constants.REALM_BASE_URL
-import io.realm.Realm.setDefaultConfiguration
-import io.realm.RealmConfiguration
-
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var realm: Realm
@@ -40,6 +22,10 @@ class MainActivity : AppCompatActivity() {
 
         realm = Database().getRealm(this)
         session = SessionStorage.get(this)
+        if (session.userid == "") {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         val userid = session.userid
         Log.d("myTag","userid: $userid")
@@ -91,17 +77,6 @@ class MainActivity : AppCompatActivity() {
         account_balance.text = "" + user?.balance + " kr"
 
         //locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-    }
-
-    private fun setUpRealm(): RealmResults<Bike> {
-        val configuration = SyncConfiguration.Builder(
-                SyncUser.current(),
-                REALM_BASE_URL + "/items").build()
-
-        realm = Realm.getInstance(configuration)
-        return realm
-                .where(Bike::class.java) // analogous to Item.class
-                .findAllAsync()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -34,8 +34,7 @@ public class SessionStorage {
             }
         }
     }
-    private SessionStorage() {
-    }
+
     public static SessionStorage get(Context context) {
         if (sSessionStorage == null) {
             sSessionStorage = new SessionStorage(context);

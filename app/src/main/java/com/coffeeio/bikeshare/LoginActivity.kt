@@ -1,25 +1,13 @@
 package com.coffeeio.bikeshare
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.annotation.TargetApi
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-
-import io.realm.ObjectServerError
-import io.realm.SyncCredentials
-import io.realm.SyncUser
-
-import com.coffeeio.bikeshare.Constants.AUTH_URL
 import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginActivity : AppCompatActivity() {
 

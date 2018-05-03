@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class FetchName extends AsyncTask<String, Void, String> {
     SessionStorage ss = null;
@@ -42,7 +41,7 @@ public class FetchName extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String s= "null";
+        String s = "null";
         try {
             s = new NetworkFetcher().getUrlBytes(params[0]);
         } catch (IOException ioe) { Log.i("NetworkFetcher", ioe.toString());  }

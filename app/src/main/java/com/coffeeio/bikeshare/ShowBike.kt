@@ -1,16 +1,13 @@
 package com.coffeeio.bikeshare
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v4.app.NotificationCompat.getExtras
-import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import io.realm.Realm
-
 
 class ShowBike : AppCompatActivity() {
     lateinit var realm : Realm
@@ -20,12 +17,15 @@ class ShowBike : AppCompatActivity() {
         setContentView(R.layout.activity_showbike)
 
         val session = SessionStorage.get(this)
+        if (session.userid == "") {
+            val intent = Intent(this@ShowBike, LoginActivity::class.java)
+            startActivity(intent)
+        }
         realm = Database().getRealm(this)
 
 
         Log.d("myTag", "Starting Show bike")
         val extra = intent.extras
-
 
         if (extra == null) {
             finish()

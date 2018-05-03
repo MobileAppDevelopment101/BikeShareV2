@@ -1,10 +1,5 @@
 package com.coffeeio.bikeshare;
 
-import android.graphics.Bitmap;
-import android.location.Location;
-import android.support.annotation.RequiresPermission;
-
-import java.util.Locale;
 import java.util.UUID;
 
 import io.realm.RealmObject;

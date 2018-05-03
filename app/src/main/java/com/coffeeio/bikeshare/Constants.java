@@ -29,6 +29,4 @@ final class Constants {
     static final String INSTANCE_ADDRESS = "realmthings.us1.cloud.realm.io";
     static final String AUTH_URL = "https://" + INSTANCE_ADDRESS + "/auth";
     static final String REALM_BASE_URL = "realms://" + INSTANCE_ADDRESS ;
-    static final String USERNAME = "xxxRealm"; // TODO: replace 'xxx' with username
-    static final String DB_FILE = "/xxxRides"; // TODO: replace 'xxx' with username
 }

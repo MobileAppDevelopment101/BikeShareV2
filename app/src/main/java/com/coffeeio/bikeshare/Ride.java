@@ -1,10 +1,6 @@
 package com.coffeeio.bikeshare;
 
-import android.location.Location;
-
-import java.util.Locale;
 import java.util.UUID;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;

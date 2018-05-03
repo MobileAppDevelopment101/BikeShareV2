@@ -1,8 +1,5 @@
 package com.coffeeio.bikeshare;
 
-import android.net.Uri;
-import android.util.Log;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

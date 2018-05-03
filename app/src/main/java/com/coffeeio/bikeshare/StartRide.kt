@@ -2,18 +2,15 @@ package com.coffeeio.bikeshare
 
 import android.content.Intent
 import android.location.Location
-import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.*
 import io.realm.Realm
 import io.realm.RealmResults
-import kotlinx.android.synthetic.main.activity_endride.*
 
 class StartRide : AppCompatActivity() {
     lateinit var realm : Realm
@@ -29,6 +26,10 @@ class StartRide : AppCompatActivity() {
         setContentView(R.layout.activity_startride)
 
         session = SessionStorage.get(this)
+        if (session.userid == "") {
+            val intent = Intent(this@StartRide, LoginActivity::class.java)
+            startActivity(intent)
+        }
         realm = Database().getRealm(this)
         bikes = realm.where(Bike::class.java).equalTo("inUse", false).findAll()
 
@@ -83,12 +84,9 @@ class StartRide : AppCompatActivity() {
 
         // Loop to update distance to bikes.
         if (updateSpinner()) {
-            var t = 0
             val handler = Handler()
             handler.postDelayed(object : Runnable {
                 override fun run() {
-                    t++
-                    Log.d("myTag", "time --> " + t)
                     if (updateSpinner())
                         handler.postDelayed(this, 1000)
                 }

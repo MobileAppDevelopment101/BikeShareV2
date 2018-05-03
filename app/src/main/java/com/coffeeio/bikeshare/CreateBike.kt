@@ -2,7 +2,6 @@ package com.coffeeio.bikeshare
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
@@ -12,7 +11,6 @@ import android.view.View
 import android.widget.*
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_createbike.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.ByteArrayOutputStream
 
 class CreateBike : AppCompatActivity() {
@@ -28,6 +26,10 @@ class CreateBike : AppCompatActivity() {
         setContentView(R.layout.activity_createbike)
 
         val session = SessionStorage.get(this)
+        if (session.userid == "") {
+            val intent = Intent(this@CreateBike, LoginActivity::class.java)
+            startActivity(intent)
+        }
         realm = Database().getRealm(this)
 
 
@@ -45,7 +47,6 @@ class CreateBike : AppCompatActivity() {
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set Adapter to Spinner
         createBikeSpinner.setAdapter(aa)
-
 
         takeImageButton.setOnClickListener { view ->
             dispatchTakePictureIntent()
@@ -112,8 +113,6 @@ class CreateBike : AppCompatActivity() {
             }
         }, 1000)
     }
-
-
 
     private fun validateType(bikeType : Int) : Boolean {
         if (bikeType == -1) {

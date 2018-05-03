@@ -1,18 +1,13 @@
 package com.coffeeio.bikeshare
 
 import android.content.Intent
-import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Button
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import io.realm.Realm
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_endride.*
 
 class EndRide : AppCompatActivity() {
@@ -23,8 +18,11 @@ class EndRide : AppCompatActivity() {
         setContentView(R.layout.activity_endride)
 
         val session = SessionStorage.get(this)
+        if (session.userid == "") {
+            val intent = Intent(this@EndRide, LoginActivity::class.java)
+            startActivity(intent)
+        }
         realm = Database().getRealm(this)
-
 
         val ride = realm.where(Ride::class.java).equalTo("userId", session.userid).equalTo("isEnded", false).findFirst()
         if (ride == null) {
@@ -47,26 +45,8 @@ class EndRide : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Update ride
-            /*
-            ride.endTime = currentTime
-            ride.cost = cost
-            ride.endLatitude = location.latitude
-            ride.endLongtitude = location.longitude
-            ride.isEnded = true
-
-            // Update bike location
-            bike.lastLongtitude = location.longitude
-            bike.lastLatitude = location.latitude
-            bike.isInUse = false
-            */
-
-            // Deduct money
             val renter = realm.where(User::class.java).equalTo("id", session.userid).findFirst()
-
-            // Add money to bike owner
             val owner = realm.where(User::class.java).equalTo("id", bike.userid).findFirst()
-
 
             realm.executeTransaction { realm ->
                     ride.endTime = currentTime

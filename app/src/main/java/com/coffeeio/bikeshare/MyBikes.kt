@@ -30,6 +30,10 @@ class MyBikes : AppCompatActivity() {
         setContentView(R.layout.activity_my_bikes)
 
         session = SessionStorage.get(this)
+        if (session.userid == "") {
+            val intent = Intent(this@MyBikes, LoginActivity::class.java)
+            startActivity(intent)
+        }
         realm = Database().getRealm(this)
 
         bikesSpinner = findViewById(R.id.bikes_spinner)
@@ -96,9 +100,14 @@ class MyBikes : AppCompatActivity() {
             val vv = SimpleDateFormat("dd/MM - yy HH:mm").format(df)
             rideTime.add(vv)
 
-            val minutes = Math.ceil((ride.endTime - ride.startTime) / 60.0).toInt()
-            rideDuration.add("" + minutes + " min")
-            rideCost.add("" + ride.cost + " kr")
+            if (ride.isEnded) {
+                val minutes = Math.ceil((ride.endTime - ride.startTime) / 60.0).toInt()
+                rideDuration.add("" + minutes + " min")
+                rideCost.add("" + ride.cost + " kr")
+            } else {
+                rideDuration.add("-")
+                rideCost.add("-")
+            }
         }
 
         rides_view.adapter.notifyDataSetChanged()

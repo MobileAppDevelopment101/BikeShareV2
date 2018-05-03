@@ -12,19 +12,20 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".CreateBike"></activity>
-        <activity android:name=".EndRide"></activity>
-        <activity android:name=".StartRide"></activity>
-        <activity android:name=".ShowBike"></activity>
-        <activity android:name=".MyBikes"></activity>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".CreateBike" android:screenOrientation="portrait"></activity>
+        <activity android:name=".EndRide" android:screenOrientation="portrait"></activity>
+        <activity android:name=".StartRide" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ShowBike" android:screenOrientation="portrait"></activity>
+        <activity android:name=".MyBikes" android:screenOrientation="portrait"></activity>
     </application>
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
