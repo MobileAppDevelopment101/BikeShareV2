@@ -43,24 +43,20 @@ class ShowBike : AppCompatActivity() {
 
         Log.d("showbike", "Show --> $bike")
 
-
         val bikeNameTxt = findViewById<TextView>(R.id.bike_name)
         val bikePriceTxt = findViewById<TextView>(R.id.bike_price)
         val bikeTypeTxt = findViewById<TextView>(R.id.bike_type)
         val bikeImage = findViewById<ImageView>(R.id.bike_image)
-
 
         bikeNameTxt.text = bike!!.name
         bikePriceTxt.text = "" + bike!!.price
         val bikeType = BikeTypes().getTypeFromId(bike!!.typeid)
         bikeTypeTxt.text = bikeType
 
-
         Log.d("showbike", "" + bikeImage.width + " : " + bikeImage.width)
 
         val imageBytes = bike!!.picture
         val bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size);
-        bikeImage.setImageBitmap(Bitmap.createScaledBitmap(bmp, bikeImage.maxWidth, bikeImage.maxHeight, false))
-
+        bikeImage.setImageBitmap(bmp)
     }
 }

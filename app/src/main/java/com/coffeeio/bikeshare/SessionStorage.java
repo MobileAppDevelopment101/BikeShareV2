@@ -17,6 +17,7 @@ public class SessionStorage {
     private String userid = "";
     private LocationManager locationManager;
     private MyLocation loc;
+    private String genName = "";
 
     private SessionStorage(Context context) {
         locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
@@ -53,5 +54,13 @@ public class SessionStorage {
     public Location getLocation() {
         if (! loc.hasLocation()) return null;
         return loc.getLocation();
+    }
+
+    public String getGenName() {
+        return genName;
+    }
+
+    public void setGenName(String genName) {
+        this.genName = genName;
     }
 }

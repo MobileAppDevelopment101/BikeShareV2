@@ -12,13 +12,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Account balance:" />
-
-        <TextView
-            android:id="@+id/account_balance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="0.00kr" />
+            android:text="Your bikes:" />
 
         <Spinner
             android:id="@+id/bikes_spinner"
@@ -26,7 +20,7 @@
             android:layout_height="wrap_content" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/activty_view"
+            android:id="@+id/rides_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

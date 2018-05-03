@@ -28,11 +28,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="My Bikes" />
-        <Button
-            android:id="@+id/my_account"
+
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My Account" />
+            android:text="Account Balance" />
+        <TextView
+            android:id="@+id/account_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

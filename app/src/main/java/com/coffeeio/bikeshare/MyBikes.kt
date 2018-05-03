@@ -3,18 +3,25 @@ package com.coffeeio.bikeshare
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import android.widget.*
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_my_bikes.*
+import java.text.SimpleDateFormat
 
 class MyBikes : AppCompatActivity() {
     lateinit var realm : Realm
     lateinit var session: SessionStorage
     lateinit var bikesSpinner : Spinner
     lateinit var bikes : RealmResults<Bike>
+
+    val rideUsers: ArrayList<String> = ArrayList()
+    val rideTime: ArrayList<String> = ArrayList()
+    val rideDuration: ArrayList<String> = ArrayList()
+    val rideCost: ArrayList<String> = ArrayList()
 
     var selectedBikeUid = ""
 
@@ -25,10 +32,7 @@ class MyBikes : AppCompatActivity() {
         session = SessionStorage.get(this)
         realm = Database().getRealm(this)
 
-
-        val balanceTxt = findViewById<TextView>(R.id.account_balance)
         bikesSpinner = findViewById(R.id.bikes_spinner)
-
 
         bikes = realm.where(Bike::class.java).equalTo("userid", session.userid).findAll()
 
@@ -39,10 +43,12 @@ class MyBikes : AppCompatActivity() {
         }
         Log.d("bikeMy", "$user")
 
-        balanceTxt.text = "" + user!!.balance + " kr"
         initSpinner()
 
+        rides_view.layoutManager = LinearLayoutManager(this)
+        rides_view.adapter = RidesAdapter(rideUsers, rideTime, rideDuration, rideCost, this)
     }
+
     private fun initSpinner() : Boolean {
         var spinnerBikes: MutableList<String> = mutableListOf<String>()
 
@@ -74,6 +80,30 @@ class MyBikes : AppCompatActivity() {
         return true
     }
 
+    private fun updateList(rides : RealmResults<Ride>) {
+        rideUsers.clear()
+        rideTime.clear()
+        rideDuration.clear()
+        rideCost.clear()
+
+        rides.forEach { ride ->
+            Log.d("myTag", "$ride")
+            val user = realm.where(User::class.java).equalTo("id", ride.userId).findFirst()
+            rideUsers.add(user!!.username)
+
+            val time = ride.startTime * 1000
+            val df = java.util.Date(time)
+            val vv = SimpleDateFormat("dd/MM - yy HH:mm").format(df)
+            rideTime.add(vv)
+
+            val minutes = Math.ceil((ride.endTime - ride.startTime) / 60.0).toInt()
+            rideDuration.add("" + minutes + " min")
+            rideCost.add("" + ride.cost + " kr")
+        }
+
+        rides_view.adapter.notifyDataSetChanged()
+    }
+
     private val itemSelectedListener : AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
             Log.d("myTag", "Selected pos $position , id: $id")
@@ -84,17 +114,11 @@ class MyBikes : AppCompatActivity() {
             val bike = bikes[position - 1]
             if (bike != null) selectedBikeUid = bike.id
 
-            updateList(selectedBikeUid)
+            val rides = realm.where(Ride::class.java).equalTo("bikeId", selectedBikeUid).findAll()
+            updateList(rides)
         }
         override fun onNothingSelected(arg0: AdapterView<*>) {
 
         }
     }
-
-    private fun updateList(bikeId : String) {
-        val rides = realm.where(Ride::class.java).equalTo("bikeId", bikeId).findAll()
-
-
-    }
-
 }

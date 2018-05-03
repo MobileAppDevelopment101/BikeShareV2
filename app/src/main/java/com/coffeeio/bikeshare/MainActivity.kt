@@ -43,13 +43,11 @@ class MainActivity : AppCompatActivity() {
 
         val userid = session.userid
         Log.d("myTag","userid: $userid")
-        Log.d("myTag","userid: $userid")
 
 
         val findRideButton = findViewById<Button>(R.id.find_ride)
         val endRideButton = findViewById<Button>(R.id.end_ride)
         val myRidesButton = findViewById<Button>(R.id.my_rides)
-        val myAccount = findViewById<Button>(R.id.my_account)
 
         findRideButton.setOnClickListener { view ->
             // Check user doesn't already have active ride.
@@ -83,18 +81,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, MyBikes::class.java)
             startActivity(intent)
         }
-        myAccount.setOnClickListener { view ->
-
-        }
         fab.setOnClickListener { view ->
             val intent = Intent(this@MainActivity, CreateBike::class.java)
             startActivity(intent)
         }
 
 
-        var items = realm.where(Bike::class.java).findAll();
-
-        Log.d("myTag", "$items")
+        val user = realm.where(User::class.java).equalTo("id", session.userid).findFirst()
+        account_balance.text = "" + user?.balance + " kr"
 
         //locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
     }

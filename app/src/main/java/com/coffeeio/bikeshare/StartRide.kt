@@ -92,7 +92,7 @@ class StartRide : AppCompatActivity() {
                     if (updateSpinner())
                         handler.postDelayed(this, 1000)
                 }
-            }, 2000)
+            }, 1000)
         }
 
     }

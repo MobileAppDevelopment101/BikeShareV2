@@ -4,12 +4,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.*
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_createbike.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.ByteArrayOutputStream
 
@@ -19,7 +21,7 @@ class CreateBike : AppCompatActivity() {
     private lateinit var imageBitmap : Bitmap
     private var bikeType = 1 // Start at first typeid
     lateinit var realm : Realm
-
+    var name : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,11 +73,14 @@ class CreateBike : AppCompatActivity() {
             b.typeid = bikeType
             b.price = java.lang.Double.parseDouble(price)
             b.userid = session.userid
+            b.name = name
 
             val stream = ByteArrayOutputStream()
             imageBitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
             val image = stream.toByteArray()
             b.picture = image
+
+            Log.d("bikeCreate", "" + bikeImageView.width + " : " + bikeImageView.height)
 
             b.lastLatitude = myLoc.latitude
             b.lastLongtitude = myLoc.longitude
@@ -90,7 +95,26 @@ class CreateBike : AppCompatActivity() {
             val intent = Intent(this@CreateBike, MainActivity::class.java)
             startActivity(intent)
         }
+
+        val handler = Handler()
+        val url = "https://randomuser.me/api/"
+        FetchName(applicationContext).execute(url)
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (session.genName == "") {
+                    FetchName(applicationContext).execute(url)
+                    handler.postDelayed(this, 1000)
+                } else {
+                    name = session.genName
+                    session.genName = ""
+                    bike_name.text = name
+                }
+            }
+        }, 1000)
     }
+
+
+
     private fun validateType(bikeType : Int) : Boolean {
         if (bikeType == -1) {
             return false
