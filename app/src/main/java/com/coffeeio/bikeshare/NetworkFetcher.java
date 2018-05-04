@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+// Taken from "Mobile App Development" week 6, BikeShareVersionMarch
 public class NetworkFetcher {
 
     public String getUrlBytes(String urlSpec) throws IOException {

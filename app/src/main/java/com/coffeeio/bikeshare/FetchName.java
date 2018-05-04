@@ -3,10 +3,8 @@ package com.coffeeio.bikeshare;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 
 public class FetchName extends AsyncTask<String, Void, String> {
@@ -16,11 +14,6 @@ public class FetchName extends AsyncTask<String, Void, String> {
     }
 
     private String parse(String s){
-        //String s has the format  Rides:{rN,rS,rE:}*
-        //where rN, rS,rE are strings
-
-        Log.d("bikeParse", s);
-
         String name = null;
 
         try {
@@ -32,9 +25,6 @@ public class FetchName extends AsyncTask<String, Void, String> {
         } catch (Exception ex) {
             Log.d("bikeparse", ex.toString());
         }
-
-        Log.d("bikeparse", "post parsing");
-        Log.d("bikeparse", name);
 
         return name;
     }

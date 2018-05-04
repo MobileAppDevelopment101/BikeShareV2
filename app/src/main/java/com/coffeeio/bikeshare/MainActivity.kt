@@ -27,10 +27,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val userid = session.userid
-        Log.d("myTag","userid: $userid")
-
-
         val findRideButton = findViewById<Button>(R.id.find_ride)
         val endRideButton = findViewById<Button>(R.id.end_ride)
         val myRidesButton = findViewById<Button>(R.id.my_rides)
@@ -75,8 +71,6 @@ class MainActivity : AppCompatActivity() {
 
         val user = realm.where(User::class.java).equalTo("id", session.userid).findFirst()
         account_balance.text = "" + user?.balance + " kr"
-
-        //locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -36,9 +36,6 @@ class LoginActivity : AppCompatActivity() {
             val username =  mUsernameEditText.text.toString().trim()
             val hash = HashUtils().hashString("SHA-512", password)
             val result : User? = realm.where(User::class.java).equalTo("username", username).equalTo("password", hash).findFirst()
-            Log.d("myTag", "pass: $password")
-            Log.d("myTag", "hash: $hash")
-            Log.d("myTag", "$result")
             if (result != null) {
                 goToMainActivity(result.getId())
             } else {

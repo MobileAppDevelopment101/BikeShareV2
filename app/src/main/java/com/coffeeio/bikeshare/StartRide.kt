@@ -41,7 +41,10 @@ class StartRide : AppCompatActivity() {
 
         directionButton.setOnClickListener { view ->
             // Validate
-            if (selectedBikeUid == "") return@setOnClickListener
+            if (selectedBikeUid == "") {
+                Toast.makeText(this, "Select bike first, before we can give directions", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val bike = realm.where(Bike::class.java).equalTo("id", selectedBikeUid).findFirst()
             if (bike == null) return@setOnClickListener
 
@@ -52,7 +55,10 @@ class StartRide : AppCompatActivity() {
         }
         showBikeButton.setOnClickListener { view ->
             // Validate
-            if (selectedBikeUid == "") return@setOnClickListener
+            if (selectedBikeUid == "") {
+                Toast.makeText(this, "Select bike first, before we can display it", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val bike = realm.where(Bike::class.java).equalTo("id", selectedBikeUid).findFirst()
             if (bike == null) return@setOnClickListener
 
@@ -61,7 +67,10 @@ class StartRide : AppCompatActivity() {
             startActivity(intent)
         }
         startRideButton.setOnClickListener { view ->
-            if (selectedBikeUid == "") return@setOnClickListener
+            if (selectedBikeUid == "") {
+                Toast.makeText(this, "Select bike first, before we can start ride", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val bike = realm.where(Bike::class.java).equalTo("id", selectedBikeUid).equalTo("inUse", false).findFirst()
             if (bike == null) return@setOnClickListener
 
@@ -113,15 +122,12 @@ class StartRide : AppCompatActivity() {
             return false
         }
         bikes.forEach { bike ->
-            Log.d("myTag", "$bike")
             addBikeToSpinner(bike, spinnerBikes)
         }
 
         findBikeSpinner.setOnItemSelectedListener(itemSelectedListener)
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerBikes)
-        // Set layout to use when the list of choices appear
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set Adapter to Spinner
         findBikeSpinner.setAdapter(aa)
 
         return true
@@ -155,7 +161,6 @@ class StartRide : AppCompatActivity() {
 
     private val itemSelectedListener : AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
-            Log.d("myTag", "Selected pos $position , id: $id")
             if (position == 0) {
                 return
             }

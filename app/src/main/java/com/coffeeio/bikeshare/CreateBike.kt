@@ -32,7 +32,6 @@ class CreateBike : AppCompatActivity() {
         }
         realm = Database().getRealm(this)
 
-
         val createBikeSpinner = findViewById<Spinner>(R.id.type_spinner)
         val priceEditText = findViewById<EditText>(R.id.price)
         val takeImageButton = findViewById<Button>(R.id.take_image)
@@ -53,7 +52,6 @@ class CreateBike : AppCompatActivity() {
         }
         createBikeButton.setOnClickListener { view ->
             val price = priceEditText.text.toString().trim()
-            Log.d("myTag", "$price")
 
             if (! validateType(bikeType)) return@setOnClickListener
             if (! validatePrice(price)) return@setOnClickListener
@@ -68,6 +66,7 @@ class CreateBike : AppCompatActivity() {
             val myLoc = session.location
             if (myLoc == null) {
                 Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
             var b = Bike()
@@ -80,9 +79,6 @@ class CreateBike : AppCompatActivity() {
             imageBitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
             val image = stream.toByteArray()
             b.picture = image
-
-            Log.d("bikeCreate", "" + bikeImageView.width + " : " + bikeImageView.height)
-
             b.lastLatitude = myLoc.latitude
             b.lastLongtitude = myLoc.longitude
 
@@ -92,7 +88,6 @@ class CreateBike : AppCompatActivity() {
                 }
             })
             Toast.makeText(this, "Bike created", Toast.LENGTH_SHORT).show()
-            Log.d("myTag", "$b")
             val intent = Intent(this@CreateBike, MainActivity::class.java)
             startActivity(intent)
         }
@@ -139,15 +134,11 @@ class CreateBike : AppCompatActivity() {
             Toast.makeText(this, "Photo not set", Toast.LENGTH_SHORT).show()
             return false
         }
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-        val image = stream.toByteArray()
         return true
     }
 
     private val itemSelectedListener : AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
-            Log.d("myTag", "Selected pos $position , id: $id")
             bikeType = BikeTypes().getTypeId(position)
         }
         override fun onNothingSelected(arg0: AdapterView<*>) {
@@ -156,9 +147,13 @@ class CreateBike : AppCompatActivity() {
     }
 
     private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        try {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (takePictureIntent.resolveActivity(packageManager) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        } catch (ex: Exception) {
+
         }
     }
 

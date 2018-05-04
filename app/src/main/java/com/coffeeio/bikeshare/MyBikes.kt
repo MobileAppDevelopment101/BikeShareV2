@@ -37,15 +37,12 @@ class MyBikes : AppCompatActivity() {
         realm = Database().getRealm(this)
 
         bikesSpinner = findViewById(R.id.bikes_spinner)
-
         bikes = realm.where(Bike::class.java).equalTo("userid", session.userid).findAll()
-
         val user = realm.where(User::class.java).equalTo("id", session.userid).findFirst()
         if (user == null) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
             finish()
         }
-        Log.d("bikeMy", "$user")
 
         initSpinner()
 
@@ -70,15 +67,12 @@ class MyBikes : AppCompatActivity() {
             return false
         }
         bikes.forEach { bike ->
-            Log.d("myTag", "$bike")
             spinnerBikes.add(bike.name)
         }
 
         bikesSpinner.setOnItemSelectedListener(itemSelectedListener)
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerBikes)
-        // Set layout to use when the list of choices appear
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set Adapter to Spinner
         bikesSpinner.setAdapter(aa)
 
         return true
@@ -91,7 +85,6 @@ class MyBikes : AppCompatActivity() {
         rideCost.clear()
 
         rides.forEach { ride ->
-            Log.d("myTag", "$ride")
             val user = realm.where(User::class.java).equalTo("id", ride.userId).findFirst()
             rideUsers.add(user!!.username)
 
@@ -115,7 +108,6 @@ class MyBikes : AppCompatActivity() {
 
     private val itemSelectedListener : AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
-            Log.d("myTag", "Selected pos $position , id: $id")
             if (position == 0) {
                 return
             }

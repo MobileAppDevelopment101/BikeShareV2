@@ -23,16 +23,12 @@ class ShowBike : AppCompatActivity() {
         }
         realm = Database().getRealm(this)
 
-
-        Log.d("myTag", "Starting Show bike")
         val extra = intent.extras
-
         if (extra == null) {
             finish()
         }
 
         val bikeId = extra.get("selectedBikeUid") as String
-        Log.d("showbike", "bikeId : $bikeId")
         if (bikeId == null ) {
             finish()
         }
@@ -40,8 +36,6 @@ class ShowBike : AppCompatActivity() {
         if (bike == null) {
             finish()
         }
-
-        Log.d("showbike", "Show --> $bike")
 
         val bikeNameTxt = findViewById<TextView>(R.id.bike_name)
         val bikePriceTxt = findViewById<TextView>(R.id.bike_price)
@@ -52,8 +46,6 @@ class ShowBike : AppCompatActivity() {
         bikePriceTxt.text = "" + bike!!.price
         val bikeType = BikeTypes().getTypeFromId(bike!!.typeid)
         bikeTypeTxt.text = bikeType
-
-        Log.d("showbike", "" + bikeImage.width + " : " + bikeImage.width)
 
         val imageBytes = bike!!.picture
         val bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size);

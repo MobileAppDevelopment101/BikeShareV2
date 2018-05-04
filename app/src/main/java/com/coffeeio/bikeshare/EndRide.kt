@@ -30,9 +30,7 @@ class EndRide : AppCompatActivity() {
             finish()
         }
         val bike =  realm.where(Bike::class.java).equalTo("id", ride!!.bikeId).findFirst()
-
         val endRideButton = findViewById<Button>(R.id.end_ride)
-
 
         endRideButton.setOnClickListener { view ->
             val currentTime = System.currentTimeMillis() / 1000L
@@ -69,12 +67,9 @@ class EndRide : AppCompatActivity() {
         }
         // Loop to update distance to bikes.
         if (updateTime(ride, bike)) {
-            var t = 0
             val handler = Handler()
             handler.postDelayed(object : Runnable {
                 override fun run() {
-                    t++
-                    Log.d("myTag", "time --> " + t)
                     if (updateTime(ride, bike))
                         handler.postDelayed(this, 1000)
                 }
