@@ -152,11 +152,8 @@ class CreateBike : AppCompatActivity() {
             if (takePictureIntent.resolveActivity(packageManager) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
-        } catch (ex: Exception) {
-
-        }
+        } catch (ex: Exception) {}
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val extras = data.extras
