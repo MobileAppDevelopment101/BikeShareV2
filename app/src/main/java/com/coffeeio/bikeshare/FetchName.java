@@ -12,10 +12,8 @@ public class FetchName extends AsyncTask<String, Void, String> {
     public FetchName(Context context){
         ss = SessionStorage.get(context);
     }
-
     private String parse(String s){
         String name = null;
-
         try {
             JSONObject mainObject = new JSONObject(s);
             JSONArray resObject = mainObject.getJSONArray("results");
@@ -25,10 +23,8 @@ public class FetchName extends AsyncTask<String, Void, String> {
         } catch (Exception ex) {
             Log.d("bikeparse", ex.toString());
         }
-
         return name;
     }
-
     @Override
     protected String doInBackground(String... params) {
         String s = "null";
@@ -37,7 +33,6 @@ public class FetchName extends AsyncTask<String, Void, String> {
         } catch (IOException ioe) { Log.i("NetworkFetcher", ioe.toString());  }
         return parse(s);
     }
-
     @Override
     protected void onPostExecute(String response) {
         ss.setGenName(response);
