@@ -19,6 +19,13 @@ public class SessionStorage {
     private MyLocation loc;
     private String genName = "";
 
+    public static SessionStorage get(Context context) {
+        if (sSessionStorage == null) {
+            sSessionStorage = new SessionStorage(context);
+        }
+        return sSessionStorage;
+    }
+    
     private SessionStorage(Context context) {
         locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         loc = new MyLocation();
@@ -35,12 +42,7 @@ public class SessionStorage {
         }
     }
 
-    public static SessionStorage get(Context context) {
-        if (sSessionStorage == null) {
-            sSessionStorage = new SessionStorage(context);
-        }
-        return sSessionStorage;
-    }
+    
 
     public String getUserid() {
         return userid;
